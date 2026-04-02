@@ -1,0 +1,169 @@
+.right-sidebar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 320px;
+    padding: 25px;
+    background: var(--bg-sidebar);
+    border-left: 1px solid var(--border-color);
+}
+
+/* --- 💥 Animation: Slide from Right --- */
+.rs-animate-slide {
+    animation: slideInRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slideInRight {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+/* --- Close Button --- */
+.rs-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 50%;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.rs-close-btn:hover {
+    background: var(--bg-input);
+    color: #ef4444; 
+}
+
+.rs-close-btn span {
+    font-size: 22px;
+}
+
+/* Profile Card */
+.rs-profile-card {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px; /* Added small gap for the close button */
+}
+
+.rs-avatar-ring {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 12px;
+    padding: 3px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--accent), #a855f7);
+}
+
+.rs-main-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--bg-sidebar);
+}
+
+.rs-profile-card h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-primary); }
+.rs-bio { font-size: 0.75rem; color: #22c55e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.rs-divider { border: none; border-top: 1px solid var(--border-color); margin: 0 0 20px 0; opacity: 0.5; }
+
+/* 🖼️ Shared Media Section */
+.rs-media-section {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ... keep your existing right-sidebar and avatar-ring styles ... */
+
+.rs-status { 
+    font-size: 0.7rem; 
+    color: #22c55e; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+/* 📝 Bio Styling */
+.rs-bio-container {
+    background: var(--bg-input); /* Subtle contrast box */
+    padding: 12px;
+    border-radius: 12px;
+    margin: 0 5px;
+    border: 1px solid var(--border-color);
+}
+
+.rs-bio-text {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+    font-style: italic;
+    opacity: 0.9;
+    word-wrap: break-word; /* Prevents long words from breaking layout */
+}
+
+.rs-divider { 
+    border: none; 
+    border-top: 1px solid var(--border-color); 
+    margin: 20px 0; 
+    opacity: 0.5; 
+}
+
+
+
+.rs-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.rs-view-all {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.tighter-3-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    overflow-y: auto;
+    padding-right: 5px;
+    max-height: 250px;
+}
+
+.rs-media-item-small {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-input);
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 1px solid var(--border-color);
+    max-width: 80px;
+    margin: 0 auto;
+}
+
+.rs-media-item-small:hover { transform: scale(1.05); }
+.rs-media-item-small img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.tighter-3-cols::-webkit-scrollbar { width: 4px; }
+.tighter-3-cols::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }

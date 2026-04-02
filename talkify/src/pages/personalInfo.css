@@ -1,0 +1,200 @@
+.personal-info-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-main);
+    padding: 20px;
+}
+
+.info-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--bg-sidebar);
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.info-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.info-header h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.back-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* --- Profile Summary --- */
+.info-profile-summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: var(--bg-input);
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.info-avatar-large {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+}
+
+.info-status-box label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.status-badge span { font-size: 18px !important; }
+.status-badge.verified { color: #22c55e; }
+.status-badge.unverified { color: #f59e0b; }
+
+/* --- Data Grid --- */
+.info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item .label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.info-item .value {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    word-break: break-all;
+}
+
+/* --- OTP & Actions --- */
+.unverified-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 12px;
+    border: 1px dashed var(--border-color);
+    border-radius: 15px;
+}
+
+.verify-now-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.otp-form {
+    background: var(--bg-input);
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+
+.otp-input {
+    width: 100%;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--text-primary);
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 5px;
+    font-weight: 800;
+    outline: none;
+}
+
+.otp-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.cancel-btn, .confirm-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.confirm-btn { background: var(--accent); color: white; border: none; }
+.cancel-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
+
+/* --- Footer --- */
+.info-footer {
+    margin-top: 25px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.info-footer p { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; }
+
+.support-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.animate-in { animation: slideUp 0.3s ease-out; }
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

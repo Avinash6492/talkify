@@ -1,0 +1,232 @@
+.login-page-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #020617;
+    background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                      radial-gradient(at 100% 0%, hsla(225,39%,30%,1) 0, transparent 50%);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-overlay {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.login-content-split {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+    gap: 20px;
+}
+
+/* --- Branding Side --- */
+.branding-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    color: white;
+}
+
+.login-logo-main {
+    width: 80px;
+    filter: drop-shadow(0 0 15px var(--accent));
+}
+
+.branding-text h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; }
+.branding-text p { font-size: 1.2rem; color: rgba(255,255,255,0.6); line-height: 1.4; }
+
+/* --- The Divider --- */
+.vertical-divider {
+    width: 1px;
+    height: 300px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 0 40px;
+}
+
+/* --- Form Side --- */
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login-form-bespoke {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.form-title { font-size: 1.6rem; color: white; display: flex; justify-content: space-between; }
+.input-group { display: flex; flex-direction: column; gap: 15px; }
+
+.login-input {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 14px 18px;
+    border-radius: 14px;
+    color: white;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+/* --- Updated Password Wrapper --- */
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .login-input {
+    width: 100%;
+    /* 👈 Add extra padding on the right so text doesn't go under the icon */
+    padding-right: 48px; 
+}
+
+.password-toggle-icon {
+    position: absolute;
+    /* 👈 Move it slightly inside the right edge */
+    right: 14px; 
+    cursor: pointer;
+    font-size: 20px !important;
+    color: rgba(255, 255, 255, 0.5);
+    user-select: none;
+    transition: all 0.2s ease;
+    /* 👈 Ensure it stays centered vertically */
+    display: flex;
+    align-items: center;
+    z-index: 5;
+}
+
+.password-toggle-icon:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+.helper-text {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.forgot-link {
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-align: right;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: -5px; /* Pull it closer to the password field */
+    transition: color 0.2s;
+}
+
+.forgot-link:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* OTP Styling (Reuse from previous step) */
+.otp-field {
+    text-align: center;
+    letter-spacing: 12px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.login-input:focus { border-color: var(--accent); background: rgba(0,0,0,0.4); }
+
+.terms-label-bespoke {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    margin: 5px 0;
+}
+
+.terms-label-bespoke b {
+    color: var(--accent);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.terms-label-bespoke b:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.google-btn-modern {
+    background: white;
+    color: #0f172a;
+    border: none;
+    padding: 12px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.form-separator {
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 10px;
+}
+.form-separator::before, .form-separator::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+.login-action-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+}
+
+.toggle-footer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+.toggle-footer span { color: var(--accent); cursor: pointer; font-weight: 700; }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .login-content-split { flex-direction: column; text-align: center; gap: 50px; }
+    .branding-section { align-items: center; }
+    .branding-text h1 { font-size: 2.5rem; }
+    .vertical-divider { display: none; }
+}
+
+/* Animations */
+.animate-in-left { animation: fadeInLeft 0.6s ease-out; }
+.animate-in-right { animation: fadeInRight 0.6s ease-out; }
+
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }

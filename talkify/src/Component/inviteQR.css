@@ -1,0 +1,197 @@
+/* --- QR Page Container --- */
+.qr-page-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-main);
+    padding: 20px;
+    overflow: hidden; /* Strict no-scroll */
+}
+
+/* --- Main Card Design --- */
+.qr-card {
+    width: 100%;
+    max-width: 360px; /* Compact ID card width */
+    background: var(--bg-sidebar);
+    padding: 24px;
+    border-radius: 32px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- Header Section --- */
+.qr-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.qr-header h2 { 
+    font-size: 1.3rem; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    margin: 0;
+}
+
+.qr-back-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.qr-back-btn:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+/* --- Inner ID Card Style --- */
+.qr-id-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.qr-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.qr-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    margin-bottom: 10px;
+}
+
+.qr-user-details h3 { 
+    font-size: 1rem; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    margin: 0;
+}
+
+.qr-user-details p { 
+    font-size: 0.8rem; 
+    color: var(--accent); 
+    font-weight: 600; 
+    margin: 2px 0 0 0;
+}
+
+/* --- The QR Code & Logo Fix --- */
+.qr-code-wrapper {
+    position: relative;
+    background: white; /* Required for QR contrast */
+    padding: 12px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+.main-qr-img { 
+    width: 140px; 
+    height: 140px;
+    display: block;
+    object-fit: contain;
+}
+
+/* 👈 The Overlay Fix: Prevents logo from growing huge */
+.qr-logo-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 38px;
+    height: 38px;
+    background: white;
+    padding: 4px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 👈 Forces the actual logo to stay inside the overlay box */
+.qr-logo-overlay img { 
+    width: 100%; 
+    height: 100%;
+    object-fit: contain; 
+}
+
+.qr-instruction { 
+    font-size: 9px; 
+    letter-spacing: 1.5px; 
+    color: var(--text-muted); 
+    font-weight: 800; 
+    text-transform: uppercase;
+}
+
+/* --- Action Buttons --- */
+.qr-actions { 
+    display: flex; 
+    gap: 10px; 
+}
+
+.qr-action-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qr-action-btn.share { 
+    background: var(--accent); 
+    color: white; 
+}
+
+.qr-action-btn.download { 
+    background: var(--bg-input); 
+    color: var(--text-primary); 
+    border: 1px solid var(--border-color); 
+}
+
+.qr-action-btn:hover { 
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Animation */
+.animate-in {
+    animation: qrPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes qrPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

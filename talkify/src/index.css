@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+/* 1. Global Reset (Your Original) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+:root {
+  /* --- Light Theme --- */
+  --bg-main: #F8FAFC;         
+  --bg-sidebar: #FFFFFF;      
+  --bg-chat: #F1F5F9;         
+  --bg-input: #F1F5F9;
+  
+  --text-primary: #0F172A;    
+  --text-secondary: #475569;  
+  --text-muted: #94A3B8;      
+  
+  --accent: #6366F1;          
+  --accent-light: #EEF2FF;
+  --accent-hover: #4F46E5;
+  
+  --border-color: #E2E8F0;
+  --danger: #F43F5E;          
+  --success: #10B981;         
+
+  --icon-filter: brightness(0);
+  --logo-text-color: #0F172A;
+
+  /* Mesh Gradient (Light) */
+  --bg-mesh: radial-gradient(at 0% 0%, hsla(210, 40%, 96%, 1) 0, transparent 50%), 
+             radial-gradient(at 100% 0%, hsla(225, 30%, 90%, 1) 0, transparent 50%);
+
+  --bubble-me: #6366F1;
+  --bubble-them: #FFFFFF;
+  --text-on-me: #FFFFFF;
+  --text-on-them: #1E293B;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+html.dark {
+  /* --- Dark Theme --- */
+  --bg-main: #020617;         
+  --bg-sidebar: #0F172A;      
+  --bg-chat: #020617;
+  --bg-input: #1E293B;
+  
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #64748B;
+  
+  --accent: #818CF8;          
+  --accent-light: #312E81;
+  --accent-hover: #C7D2FE;
+  
+  --border-color: #1E293B;
+
+  --icon-filter: brightness(0) invert(1);
+  --logo-text-color: #F8FAFC;
+
+  /* Bespoke Mesh Gradient (Dark) */
+  --bg-mesh: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+             radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+             radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+
+  --bubble-me: #4F46E5;
+  --bubble-them: #1E293B;
+  --text-on-me: #FFFFFF;
+  --text-on-them: #F1F5F9;
+}
+
+body {
+  background-color: var(--bg-main);
+  background-image: var(--bg-mesh);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Texture Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.035;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+}

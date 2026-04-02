@@ -1,0 +1,90 @@
+.about-page-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-main);
+    padding: 20px;
+}
+
+.about-card {
+    width: 100%;
+    max-width: 450px;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: 32px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.about-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.about-header h2 { font-size: 1.4rem; color: var(--text-primary); }
+
+.about-hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.about-logo {
+    width: 80px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px var(--accent));
+}
+
+.about-hero h3 { font-size: 0.9rem; color: var(--accent); font-weight: 700; margin-bottom: 5px; }
+.tagline { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+
+.about-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-box {
+    background: var(--bg-input);
+    padding: 15px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.info-box h4 { font-size: 0.9rem; margin-bottom: 8px; color: var(--text-primary); }
+.info-box p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+.feature-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.feature-item span { color: var(--accent); font-size: 24px; }
+.feature-item h5 { font-size: 0.9rem; color: var(--text-primary); }
+.feature-item p { font-size: 0.75rem; color: var(--text-muted); }
+
+.about-footer {
+    margin-top: 30px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.about-footer p { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; }
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 0.75rem;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.social-links span:hover { text-decoration: underline; }

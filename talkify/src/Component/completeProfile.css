@@ -1,0 +1,112 @@
+.profile-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.profile-modal-card {
+    background: var(--bg-sidebar);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 { font-size: 1.3rem; color: var(--text-primary); }
+
+.profile-upload-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.avatar-label {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    cursor: pointer;
+}
+
+.profile-preview-img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent);
+}
+
+.upload-overlay {
+    position: absolute;
+    bottom: 0; right: 0;
+    background: var(--accent);
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-sidebar);
+}
+
+.input-group-premium {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group-premium label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+
+.input-group-premium input, 
+.input-group-premium textarea {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 12px;
+    color: var(--text-primary);
+    outline: none;
+    transition: 0.2s;
+}
+
+.input-group-premium input:focus { border-color: var(--accent); }
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    flex: 1;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    flex: 1;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+}
