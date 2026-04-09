@@ -44,7 +44,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     fetchData();
   }, []);
 
-  // 📡 2. Real-time Socket Listener for Unseen Badges
+  // 📡 2. Real-time Socket Listener - Fixed: only mounts once, no race condition
   useEffect(() => {
     if (!currentUser?._id) return;
 
@@ -53,7 +53,6 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     });
     
     socket.on("newMessage", (newMsg) => {
-        // Increment count only if the message is NOT from the currently selected chat
         if (selectedUser?._id !== newMsg.senderId) {
             setUnseenCounts(prev => ({
                 ...prev,
@@ -63,7 +62,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     });
 
     return () => socket.disconnect();
-  }, [selectedUser?._id, currentUser?._id]);
+  }, [currentUser?._id]); // ✅ Fixed: removed selectedUser?._id from dependencies
 
   // 🖱️ 3. Close Account Menu when clicking outside
   useEffect(() => {
@@ -79,7 +78,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   // 🔍 4. Search Logic with Debounce
   useEffect(() => {
     if (!searchTerm.trim()) {
-        fetchData(); // If search is cleared, reload normal contacts
+        fetchData();
         return;
     }
 
@@ -102,7 +101,6 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
 
   const handleSelectUser = (item) => {
     setSelectedUser(item);
-    // Clear unseen count locally when chat is opened
     setUnseenCounts(prev => ({ ...prev, [item._id]: 0 }));
   };
 
@@ -122,7 +120,6 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         list = [...groups, ...users];
     }
 
-    // Secondary client-side filter for safety
     if (!searchTerm) return list;
     return list.filter(item => 
       (item.name || item.fullName || "").toLowerCase().includes(searchTerm.toLowerCase())
@@ -132,7 +129,6 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   return (
     <div className={`sidebar ${selectedUser ? "hide-mobile" : ""}`}>
       
-      {/* 🟢 TOP SECTION: Fixed Header, Search, and Tabs */}
       <div className="sidebar-top">
         <div className="sidebar-header">
           <div className="logo-container">
@@ -204,7 +200,6 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         </div>
       </div>
 
-      {/* 🔵 LIST SECTION: Scrolls independently */}
       <div className="user-list">
         {getFilteredList().length > 0 ? (
             getFilteredList().map((item) => {
@@ -234,7 +229,6 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         )}
       </div>
       
-      {/* 🚪 Logout Confirmation Modal */}
       <LogoutModal 
         isOpen={isLogoutModalOpen} 
         onClose={() => setIsLogoutModalOpen(false)} 
