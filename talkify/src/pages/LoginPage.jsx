@@ -22,6 +22,7 @@ const LoginPage = () => {
     const [agreed, setAgreed] = useState(false); 
     const [legalType, setLegalType] = useState("terms");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false); // ✅ Added loading state
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,7 +30,7 @@ const LoginPage = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        
+        setLoading(true); // ✅ Start loading
         try {
             if (currState === "Login") {
                 const res = await axiosInstance.post('/users/login', {
@@ -39,8 +40,6 @@ const LoginPage = () => {
                 if (res.data.success) {
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("userData", JSON.stringify(res.data.userData));
-                    
-                    // 🚪 Logged in users go to the Home check logic
                     navigate('/');
                 } else {
                     alert(res.data.message);
@@ -53,8 +52,6 @@ const LoginPage = () => {
                     if (res.data.success) {
                         localStorage.setItem("token", res.data.token);
                         localStorage.setItem("userData", JSON.stringify(res.data.userData));
-                        
-                        // 🚩 NEW USER: Force them to the Profile Setup page immediately
                         navigate('/profile'); 
                     } else {
                         alert(res.data.message);
@@ -63,6 +60,8 @@ const LoginPage = () => {
             }
         } catch (error) {
             alert(error.response?.data?.message || "Authentication failed");
+        } finally {
+            setLoading(false); // ✅ Stop loading
         }
     };
 
@@ -110,8 +109,9 @@ const LoginPage = () => {
                             )}
                         </div>
 
-                        <button type='submit' className="login-action-btn">
-                            {isDataSubmitted ? "Get Started" : (currState === "Login" ? "Login" : "Next")}
+                        {/* ✅ Button shows loading state and is disabled during API call */}
+                        <button type='submit' className="login-action-btn" disabled={loading}>
+                            {loading ? "Please wait..." : isDataSubmitted ? "Get Started" : (currState === "Login" ? "Login" : "Next")}
                         </button>
 
                         {!isDataSubmitted && (
