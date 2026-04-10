@@ -11,10 +11,12 @@ import { Server } from "socket.io";
 const app = express();
 const httpServer = http.createServer(app); 
 
-// --- Socket.io Setup ---
+// ✅ Use environment variable with fallback
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
+
 export const io = new Server(httpServer, {
     cors: { 
-        origin: "http://localhost:5173", // 👈 Ensure this matches your Vite port
+        origin: CORS_ORIGIN,
         credentials: true 
     }
 });
@@ -29,7 +31,6 @@ io.on("connection", (socket) => {
         userSocketMap[userId] = socket.id;
     }
 
-    // --- GROUP CHAT ROOMS ---
     socket.on("joinGroup", (groupId) => {
         socket.join(groupId);
         console.log(`User ${userId} joined room: ${groupId}`);
@@ -47,7 +48,6 @@ io.on("connection", (socket) => {
         io.emit("getOnlineUsers", Object.keys(userSocketMap));
     });
 
-    // --- TYPING INDICATORS ---
     socket.on("typing", ({ receiverId, groupId, isGroup }) => {
         if (isGroup && groupId) {
             socket.to(groupId).emit("userTyping", { 
@@ -78,26 +78,21 @@ io.on("connection", (socket) => {
     });
 });
 
-// --- Middleware ---
 app.use(express.json({ limit: "4mb" }));
 
-// 🛠️ Fixed CORS: Required for withCredentials: true in Axios
+// ✅ Use environment variable with fallback
 app.use(cors({
-    origin: "http://localhost:5173", // 👈 Change to your frontend URL
+    origin: CORS_ORIGIN,
     credentials: true
 }));
 
-// --- Database Connection ---
 connectDB(); 
 
-// --- API Routes ---
 app.get("/api/status", (req, res) => res.send("Server is live"));
 
-// 🚀 Option B: Updated prefix from /api/auth to /api/users
 app.use("/api/users", userRouter); 
 app.use("/api/messages", messageRouter);
 app.use("/api/groups", groupRouter);
 
-// --- Server Startup ---
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => console.log("🚀 Server running on PORT: " + PORT));
