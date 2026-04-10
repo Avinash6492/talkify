@@ -2,6 +2,8 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import http from "http";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import { connectDB } from "./lib/db.js"; 
 import userRouter from "./Routes/userRouter.js";
 import messageRouter from "./Routes/messageRouter.js";
@@ -11,8 +13,14 @@ import { Server } from "socket.io";
 const app = express();
 const httpServer = http.createServer(app); 
 
-// ✅ Use environment variable with fallback
 const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
+
+// ✅ Rate Limiter - max 100 requests per 15 minutes
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { success: false, message: "Too many requests, please try again later." }
+});
 
 export const io = new Server(httpServer, {
     cors: { 
@@ -79,12 +87,12 @@ io.on("connection", (socket) => {
 });
 
 app.use(express.json({ limit: "4mb" }));
-
-// ✅ Use environment variable with fallback
+app.use(helmet()); // ✅ Security headers
 app.use(cors({
     origin: CORS_ORIGIN,
     credentials: true
 }));
+app.use('/api/', limiter); // ✅ Rate limiting on all API routes
 
 connectDB(); 
 
