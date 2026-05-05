@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import assets from '../assets/assets';
 import axiosInstance from '../Config/axios';
@@ -7,26 +7,56 @@ import "./ProfilePage.css";
 const ProfilePage = () => {
     const navigate = useNavigate();
     
-    // Get the initial data from localStorage
     const getInitialData = () => JSON.parse(localStorage.getItem("userData")) || {};
     const currentUser = getInitialData();
 
     const [image, setImage] = useState(null);
     const [name, setName] = useState(currentUser?.fullName || "");
-    const [username] = useState(currentUser?.username || "");
+    const [username, setUsername] = useState(currentUser?.username || "");
     const [bio, setBio] = useState(currentUser?.bio || "");
     const [loading, setLoading] = useState(false);
+    
+    // 🆕 State for username validation
+    const [isAvailable, setIsAvailable] = useState(null); // null = original, true = available, false = taken
+    const [checkingUsername, setCheckingUsername] = useState(false);
+
+    // 🔍 1. Real-time Username Availability Check
+    useEffect(() => {
+        // Don't check if the username hasn't changed from the original
+        if (!username || username === currentUser?.username) {
+            setIsAvailable(null);
+            return;
+        }
+
+        // Clean username: No spaces, allow symbols and numbers
+        const cleanUsername = username.replace(/\s/g, "").toLowerCase();
+        if (username !== cleanUsername) setUsername(cleanUsername);
+
+        const delayDebounceFn = setTimeout(async () => {
+            setCheckingUsername(true);
+            try {
+                // Adjust this URL to match your backend route for checking availability
+                const res = await axiosInstance.get(`/users/check-username?username=${cleanUsername}`);
+                setIsAvailable(res.data.available);
+            } catch (err) {
+                console.error("Availability check failed", err);
+            } finally {
+                setCheckingUsername(false);
+            }
+        }, 500); // 500ms delay to prevent excessive API calls
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [username]);
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
         if (!name.trim()) return alert("Full Name is required!");
+        if (isAvailable === false) return alert("This username is already taken!");
         
         setLoading(true);
 
         try {
             let base64Image = null;
-            
-            // Convert file to Base64 if a new image was selected
             if (image) {
                 const reader = new FileReader();
                 reader.readAsDataURL(image);
@@ -36,27 +66,22 @@ const ProfilePage = () => {
                 });
             }
 
-            // Send update to backend
+            // 📤 Send updated username along with other details
             const res = await axiosInstance.put('/users/update-profile', {
                 fullName: name,
+                username: username, // Pass the new username
                 bio: bio,
                 profilePic: base64Image 
             });
 
             if (res.data.success) {
-                // ✅ UPDATE LOCAL STORAGE: Overwrite with fresh data from server
                 localStorage.setItem("userData", JSON.stringify(res.data.user));
-                
                 alert("Profile successfully updated!");
-                
-                // 🚀 REFRESH & NAVIGATE: 
-                // Using window.location.href forces the App to re-run its guard logic
-                // with the brand-new localStorage data.
                 window.location.href = "/";
             }
         } catch (error) {
             console.error("Update Error:", error);
-            alert(error.response?.data?.message || "Failed to update profile. Please try again.");
+            alert(error.response?.data?.message || "Failed to update profile.");
         } finally {
             setLoading(false);
         }
@@ -81,25 +106,28 @@ const ProfilePage = () => {
                             <span className="material-symbols-rounded">add_a_photo</span>
                             {image ? "Photo Selected" : "Upload Profile Photo"}
                         </label>
-                        <input 
-                            onChange={(e) => setImage(e.target.files[0])} 
-                            type="file" 
-                            id='avatar' 
-                            hidden 
-                            accept="image/*" 
-                        />
+                        <input onChange={(e) => setImage(e.target.files[0])} type="file" id='avatar' hidden accept="image/*" />
                     </div>
 
                     <div className='input-stack'>
                         <div className='input-box'>
-                            <label>Username</label>
-                            <input 
-                                type="text" 
-                                value={username} 
-                                className='clean-input disabled-input' 
-                                disabled 
-                            />
-                            <span className='input-hint'>Usernames cannot be changed</span>
+                            <label>Username (Must be unique)</label>
+                            <div className="username-input-container">
+                                <input 
+                                    type="text" 
+                                    value={username} 
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className={`clean-input ${isAvailable === false ? 'input-error' : ''}`}
+                                    placeholder="e.g. avinash_123!"
+                                />
+                                {/* 🛠️ Status Indicator */}
+                                <div className="availability-indicator">
+                                    {checkingUsername && <div className="loader-mini"></div>}
+                                    {!checkingUsername && isAvailable === true && <span className="status-available">Available</span>}
+                                    {!checkingUsername && isAvailable === false && <span className="status-taken">Taken</span>}
+                                </div>
+                            </div>
+                            <span className='input-hint'>Use letters, numbers, and symbols like _ ! @</span>
                         </div>
 
                         <div className='input-box'>
@@ -128,7 +156,11 @@ const ProfilePage = () => {
                     </div>
 
                     <div className="profile-form-actions">
-                        <button type='submit' className="update-profile-btn" disabled={loading}>
+                        <button 
+                            type='submit' 
+                            className="update-profile-btn" 
+                            disabled={loading || checkingUsername || isAvailable === false}
+                        >
                             {loading ? "Saving Changes..." : "Finish Setup & Enter"}
                         </button>
                     </div>

@@ -22,7 +22,7 @@ const LoginPage = () => {
     const [agreed, setAgreed] = useState(false); 
     const [legalType, setLegalType] = useState("terms");
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false); // ✅ Added loading state
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +30,7 @@ const LoginPage = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // ✅ Start loading
+        setLoading(true);
         try {
             if (currState === "Login") {
                 const res = await axiosInstance.post('/users/login', {
@@ -40,6 +40,7 @@ const LoginPage = () => {
                 if (res.data.success) {
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("userData", JSON.stringify(res.data.userData));
+                    window.dispatchEvent(new Event("authChange"));
                     navigate('/');
                 } else {
                     alert(res.data.message);
@@ -52,6 +53,7 @@ const LoginPage = () => {
                     if (res.data.success) {
                         localStorage.setItem("token", res.data.token);
                         localStorage.setItem("userData", JSON.stringify(res.data.userData));
+                        window.dispatchEvent(new Event("authChange"));
                         navigate('/profile'); 
                     } else {
                         alert(res.data.message);
@@ -61,7 +63,7 @@ const LoginPage = () => {
         } catch (error) {
             alert(error.response?.data?.message || "Authentication failed");
         } finally {
-            setLoading(false); // ✅ Stop loading
+            setLoading(false);
         }
     };
 
@@ -70,7 +72,6 @@ const LoginPage = () => {
             <div className='login-overlay'></div>
             <div className='login-content-split'>
                 <div className='branding-section'>
-                    <img src={assets.logo_big} alt="logo" className="login-logo-main" />
                     <div className='branding-text'>
                         <h1>Talkify</h1>
                         <p>Connect with the world, <br/> one message at a time.</p>
@@ -91,12 +92,28 @@ const LoginPage = () => {
                                         </>
                                     )}
                                     <input name="email" type="email" placeholder='Email Address' className='login-input' onChange={handleInputChange} required />
+                                    
                                     <div className="password-input-wrapper">
-                                        <input name="password" type={showPassword ? "text" : "password"} placeholder='Password' className='login-input' onChange={handleInputChange} required />
+                                        <input 
+                                            name="password" 
+                                            type={showPassword ? "text" : "password"} 
+                                            placeholder='Password' 
+                                            className='login-input' 
+                                            onChange={handleInputChange} 
+                                            required 
+                                        />
                                         <span className="material-symbols-rounded password-toggle-icon" onClick={() => setShowPassword(!showPassword)}>
                                             {showPassword ? "visibility" : "visibility_off"}
                                         </span>
                                     </div>
+
+                                    {/* ✅ Added Forgot Password Option */}
+                                    {currState === "Login" && (
+                                        <p className="forgot-password-link" onClick={() => alert("Redirecting to reset password...")}>
+                                            Forgot Password?
+                                        </p>
+                                    )}
+
                                     {currState === "Sign up" && (
                                         <label className='terms-label-bespoke'>
                                             <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required />
@@ -109,7 +126,6 @@ const LoginPage = () => {
                             )}
                         </div>
 
-                        {/* ✅ Button shows loading state and is disabled during API call */}
                         <button type='submit' className="login-action-btn" disabled={loading}>
                             {loading ? "Please wait..." : isDataSubmitted ? "Get Started" : (currState === "Login" ? "Login" : "Next")}
                         </button>

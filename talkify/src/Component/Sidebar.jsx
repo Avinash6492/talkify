@@ -9,11 +9,9 @@ import "./Sidebar.css";
 
 const Sidebar = ({ selectedUser, setSelectedUser }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("all");
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [users, setUsers] = useState([]); 
-  const [groups, setGroups] = useState([]); 
   const [unseenCounts, setUnseenCounts] = useState({}); 
   const [loading, setLoading] = useState(false);
   const menuRef = useRef(null);
@@ -21,19 +19,14 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
 
   const currentUser = JSON.parse(localStorage.getItem("userData"));
 
-  // 📥 1. Fetch Initial Data (Contacts & Groups)
-  const fetchData = async () => {
+  // --- 1. Fetch only users with existing chat history ---
+  const fetchActiveChats = async () => {
     try {
-      const [userRes, groupRes] = await Promise.all([
-        axiosInstance.get('/users/contacts'),
-        axiosInstance.get('/groups/all')
-      ]);
-      if (userRes.data.success) {
-        setUsers(userRes.data.users);
-        setUnseenCounts(userRes.data.unseenMessages || {});
-      }
-      if (groupRes.data.success) {
-        setGroups(groupRes.data.groups);
+      // Endpoint should return users you have already communicated with
+      const res = await axiosInstance.get('/messages/users'); 
+      if (res.data.success) {
+        setUsers(res.data.users || []);
+        setUnseenCounts(res.data.unseenMessages || {});
       }
     } catch (err) { 
       console.error("Load error:", err); 
@@ -41,18 +34,18 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchActiveChats();
   }, []);
 
-  // 📡 2. Real-time Socket Listener - Fixed: only mounts once, no race condition
+  // --- 2. Real-time Message Notifications ---
   useEffect(() => {
     if (!currentUser?._id) return;
-
     const socket = io("http://localhost:5000", {
         query: { userId: currentUser._id }
     });
-    
+
     socket.on("newMessage", (newMsg) => {
+        // Increment badge if the sender is NOT the currently open chat
         if (selectedUser?._id !== newMsg.senderId) {
             setUnseenCounts(prev => ({
                 ...prev,
@@ -62,29 +55,19 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     });
 
     return () => socket.disconnect();
-  }, [currentUser?._id]); // ✅ Fixed: removed selectedUser?._id from dependencies
+  }, [currentUser?._id, selectedUser?._id]);
 
-  // 🖱️ 3. Close Account Menu when clicking outside
-  useEffect(() => {
-    const handler = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setShowAccountMenu(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  // 🔍 4. Search Logic with Debounce
+  // --- 3. Search Logic: Filter Active vs Search Results ---
   useEffect(() => {
     if (!searchTerm.trim()) {
-        fetchData();
+        fetchActiveChats(); 
         return;
     }
 
     const delayDebounceFn = setTimeout(async () => {
         setLoading(true);
         try {
+          // Hits the new searchUsers controller function
           const res = await axiosInstance.get(`/users/search?query=${searchTerm}`);
           if (res.data.success) {
               setUsers(res.data.users);
@@ -94,36 +77,15 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         } finally { 
           setLoading(false); 
         }
-    }, 500);
+    }, 400);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
   const handleSelectUser = (item) => {
     setSelectedUser(item);
-    setUnseenCounts(prev => ({ ...prev, [item._id]: 0 }));
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/login');
-  };
-
-  // 🗄️ 5. Combine and Filter List based on Tabs
-  const getFilteredList = () => {
-    let list = [];
-    if (activeTab === "groups") {
-        list = groups;
-    } else if (activeTab === "friends") {
-        list = users;
-    } else {
-        list = [...groups, ...users];
-    }
-
-    if (!searchTerm) return list;
-    return list.filter(item => 
-      (item.name || item.fullName || "").toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    setSearchTerm(""); // Reset search to return to "Recent Chats" view
+    setUnseenCounts(prev => ({ ...prev, [item._id]: 0 })); // Clear badge locally
   };
 
   return (
@@ -141,42 +103,41 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
               <div className="profile-entry" onClick={() => setShowAccountMenu(!showAccountMenu)}>
                 <img 
                   src={currentUser?.profilePic || assets.avatar_icon} 
-                  alt="me" 
                   className={`header-user-img ${showAccountMenu ? 'active-ring' : ''}`} 
+                  alt="profile"
                 />
                 <div className="online-dot"></div>
               </div>
 
               {showAccountMenu && (
-                <div className="bespoke-dropdown animate-pop">
-                  <div className="menu-group">
-                    <div className="menu-item" onClick={() => navigate("/profile")}>
-                      <span className="material-symbols-rounded">edit_square</span> Update Profile
-                    </div>
-                    <div className="menu-item" onClick={() => navigate("/personal-info")}>
-                      <span className="material-symbols-rounded">badge</span> Personal Info
-                    </div>
-                  </div>
-                  <div className="menu-divider"></div>
-                  <div className="menu-group">
-                    <div className="menu-item" onClick={() => navigate("/createGroup")}>
-                      <span className="material-symbols-rounded">group_add</span> Create Group
-                    </div>
-                    <div className="menu-item" onClick={() => navigate("/settings")}>
-                      <span className="material-symbols-rounded">settings</span> Settings
-                    </div>
-                  </div>
-                  <div className="menu-divider"></div>
-                  <div className="menu-group">
-                    <div className="menu-item" onClick={() => { localStorage.clear(); navigate("/login"); }}>
-                      <span className="material-symbols-rounded">person_add</span> Add New Account
-                    </div>
-                    <div className="menu-item logout" onClick={() => setIsLogoutModalOpen(true)}>
-                      <span className="material-symbols-rounded">logout</span> Logout
-                    </div>
-                  </div>
-                </div>
-              )}
+  <div className="bespoke-dropdown animate-pop">
+    <div className="menu-item" onClick={() => { setShowAccountMenu(false); navigate("/profile"); }}>
+      <span className="material-symbols-rounded">person</span> Profile
+    </div>
+    
+    <div className="menu-item" onClick={() => { setShowAccountMenu(false); navigate("/create-group"); }}>
+      <span className="material-symbols-rounded">group_add</span> Create Group
+    </div>
+
+    <div className="menu-item" onClick={() => { setShowAccountMenu(false); navigate("/qr"); }}>
+      <span className="material-symbols-rounded">qr_code_2</span> Invite QR
+    </div>
+    
+    <div className="menu-divider"></div>
+    
+   <div className="menu-item" onClick={() => { setShowAccountMenu(false); navigate("/personal-info"); }}>
+      <span className="material-symbols-rounded">badge</span> Personal Info
+    </div>
+
+    <div className="menu-item" onClick={() => { setShowAccountMenu(false); navigate("/settings"); }}>
+      <span className="material-symbols-rounded">settings</span> Settings
+    </div>
+    
+    <div className="menu-item logout" onClick={() => { setShowAccountMenu(false); setIsLogoutModalOpen(true); }}>
+      <span className="material-symbols-rounded">logout</span> Logout
+    </div>
+  </div>
+)}
             </div>
           </div>
         </div>
@@ -186,53 +147,57 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
           <input 
               type="text" 
               className="search-input" 
-              placeholder="Search chats..." 
+              placeholder="Find friends by username..." 
               value={searchTerm} 
               onChange={(e) => setSearchTerm(e.target.value)} 
           />
           {loading && <div className="loader-mini-spinner"></div>}
         </div>
-
-        <div className="sidebar-tabs">
-          <button className={activeTab === "all" ? "active" : ""} onClick={() => setActiveTab("all")}>All</button>
-          <button className={activeTab === "friends" ? "active" : ""} onClick={() => setActiveTab("friends")}>Friends</button>
-          <button className={activeTab === "groups" ? "active" : ""} onClick={() => setActiveTab("groups")}>Groups</button>
-        </div>
       </div>
 
       <div className="user-list">
-        {getFilteredList().length > 0 ? (
-            getFilteredList().map((item) => {
-              const isGroup = !!item.admin;
-              return (
-                <div 
-                  key={item._id} 
-                  onClick={() => handleSelectUser(item)} 
-                  className={`user-item ${selectedUser?._id === item._id ? "active" : ""}`}
-                >
-                  <div className="avatar-rel">
-                    <img src={(isGroup ? item.groupProfilePic : item.profilePic) || assets.avatar_icon} className="user-avatar" alt="pfp" />
-                    {!isGroup && <div className="online-dot"></div>}
-                  </div>
-                  <div className="user-info">
-                    <p className="user-fullname">{isGroup ? `👥 ${item.name}` : item.fullName}</p>
-                    <span className="user-handle">{isGroup ? `${item.members.length} members` : `@${item.username}`}</span>
-                  </div>
-                  {unseenCounts[item._id] > 0 && (
-                    <div className="unseen-badge animate-pop">{unseenCounts[item._id]}</div>
-                  )}
+        <p className="list-label">{searchTerm ? "Search Results" : "Recent Chats"}</p>
+        
+        {users.length > 0 ? (
+            users.map((item) => (
+              <div 
+                key={item._id} 
+                onClick={() => handleSelectUser(item)} 
+                className={`user-item ${selectedUser?._id === item._id ? "active" : ""}`}
+              >
+                <div className="avatar-rel">
+                  <img src={item.profilePic || assets.avatar_icon} className="user-avatar" alt="pfp" />
                 </div>
-              )
-            })
+                <div className="user-info">
+                  <p className="user-fullname">{item.fullName}</p>
+                  <span className="user-handle">@{item.username}</span>
+                </div>
+                {/* 🔴 Notification Badge */}
+                {unseenCounts[item._id] > 0 && (
+                  <div className="unseen-badge animate-pop">{unseenCounts[item._id]}</div>
+                )}
+              </div>
+            ))
         ) : (
-            <p className="empty-text">Nothing found</p>
+            /* Empty State for New Users */
+            <div className="search-placeholder">
+               <img src={assets.logo_icon} alt="search" className="placeholder-icon" />
+               <p className="empty-text">
+                  {searchTerm 
+                    ? "We couldn't find anyone with that username." 
+                    : "No conversations yet. Search for a friend to start your first chat!"}
+               </p>
+            </div>
         )}
       </div>
       
       <LogoutModal 
         isOpen={isLogoutModalOpen} 
         onClose={() => setIsLogoutModalOpen(false)} 
-        onConfirm={handleLogout} 
+        onConfirm={() => { 
+          localStorage.clear(); 
+          navigate('/login'); 
+        }} 
       />
     </div>
   );

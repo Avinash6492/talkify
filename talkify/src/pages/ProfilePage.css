@@ -5,25 +5,25 @@
     align-items: center; /* Center vertically */
     justify-content: center;
     background-color: var(--bg-main);
-    padding: 20px;
+    padding: 15px; /* Reduced from 20px for better fit */
     overflow: hidden; /* No scrollbars on this page */
 }
 
 .profile-minimal-card {
     width: 100%;
-    max-width: 600px;
-    background: var(--bg-sidebar); /* Matches your card theme */
-    padding: 30px 40px;
+    max-width: 480px; /* Reduced width for a sleeker, centered look */
+    background: var(--bg-sidebar); 
+    padding: 20px 30px; /* Tightened padding */
     border-radius: 24px;
     border: 1px solid var(--border-color);
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .profile-main-title {
-    font-size: 2.2rem; /* Slightly smaller to save space */
+    font-size: 1.6rem; /* Smaller size to save vertical space */
     font-weight: 700;
-    margin-bottom: 25px;
-    letter-spacing: -1px;
+    margin-bottom: 15px; /* Reduced margin */
+    letter-spacing: -0.5px;
     color: var(--text-primary);
 }
 
@@ -31,13 +31,13 @@
 .profile-pic-uploader {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 15px; /* Reduced gap */
 }
 
 .main-avatar-img {
-    width: 70px; /* Reduced from 100px */
-    height: 70px;
+    width: 60px; /* Reduced size for compactness */
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--border-color);
@@ -47,7 +47,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--accent);
     cursor: pointer;
@@ -57,30 +57,30 @@
 .input-stack {
     display: flex;
     flex-direction: column;
-    gap: 18px; /* Reduced gap from 30px */
-    margin-bottom: 25px;
+    gap: 12px; /* Reduced vertical gap between input blocks */
+    margin-bottom: 20px;
 }
 
 .input-box {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px; /* Space between label and input */
 }
 
 .input-box label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: var(--text-secondary);
 }
 
 .clean-input {
     width: 100%;
-    padding: 12px 16px; /* Slimmer padding */
+    padding: 10px 14px; /* Slimmer padding */
     background: var(--bg-input);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     color: var(--text-primary);
-    font-size: 15px;
+    font-size: 14px;
     outline: none;
     transition: all 0.2s;
 }
@@ -91,8 +91,8 @@
 }
 
 .bio-area {
-    min-height: 80px; /* Reduced height to keep form under 100vh */
-    max-height: 100px;
+    min-height: 60px; /* Reduced height */
+    max-height: 80px;
     resize: none;
 }
 
@@ -114,13 +114,14 @@
 .update-profile-btn {
     background-color: var(--accent);
     color: white;
-    padding: 14px 28px;
+    padding: 12px 24px;
     border: none;
     border-radius: 50px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
+    width: 100%; /* Full width for compact button style */
 }
 
 .update-profile-btn:hover {
@@ -129,10 +130,11 @@
 }
 
 /* --- Responsive fix for tiny screens --- */
-@media (max-height: 700px) {
+@media (max-height: 650px) {
     .profile-minimal-card {
-        padding: 20px;
+        padding: 15px 25px;
     }
-    .profile-main-title { font-size: 1.8rem; margin-bottom: 15px; }
-    .input-stack { gap: 12px; }
+    .profile-main-title { font-size: 1.4rem; margin-bottom: 10px; }
+    .input-stack { gap: 8px; }
+    .main-avatar-img { width: 50px; height: 50px; }
 }

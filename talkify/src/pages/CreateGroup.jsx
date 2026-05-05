@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import assets from '../assets/assets';
-import axiosInstance from '../Config/axios'; // 👈 Connected to real API
+import axiosInstance from '../Config/axios'; 
 import "./CreateGroup.css";
 
 const CreateGroup = () => {
     const [groupImage, setGroupImage] = useState(null);
     const [groupName, setGroupName] = useState("");
-    const [availableUsers, setAvailableUsers] = useState([]); // 👈 Real Users
+    const [availableUsers, setAvailableUsers] = useState([]); 
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // 1. Fetch real contacts from DB to invite
+    // Fetch ONLY active contacts to mirror Sidebar logic
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await axiosInstance.get('/users/contacts');
-                if (res.data.success) setAvailableUsers(res.data.users);
-            } catch (err) { console.error("Error fetching users:", err); }
+                const res = await axiosInstance.get('/messages/users'); 
+                if (res.data.success) {
+                    setAvailableUsers(res.data.users || []);
+                }
+            } catch (err) { 
+                console.error("Error fetching users:", err); 
+            }
         };
         fetchUsers();
     }, []);
@@ -29,18 +33,14 @@ const CreateGroup = () => {
         );
     };
 
-    // 2. Real Group Creation Logic
     const handleCreateGroup = async (e) => {
         e.preventDefault();
-
         if (!groupName.trim()) return alert("Please enter a group name.");
         if (selectedUsers.length === 0) return alert("Please add at least one member.");
 
         setLoading(true);
         try {
             let imageUrl = "";
-
-            // Upload Group Icon to Cloudinary if selected
             if (groupImage) {
                 const reader = new FileReader();
                 reader.readAsDataURL(groupImage);
@@ -57,7 +57,6 @@ const CreateGroup = () => {
             });
 
             if (res.data.success) {
-                alert(`🎉 Success! ${groupName} created.`);
                 navigate('/');
             }
         } catch (error) {
@@ -72,7 +71,7 @@ const CreateGroup = () => {
         <div className='group-page-container'>
             <div className='group-minimal-card animate-in'>
                 <form onSubmit={handleCreateGroup} className='group-main-form'>
-                    <h1 className='group-main-title'>Create Group</h1>
+                    <h1 className='group-main-title'>New Group</h1>
 
                     <div className='group-pic-uploader'>
                         <div className={`main-group-img-wrapper ${groupImage ? 'image-loaded' : ''}`}>
@@ -87,8 +86,8 @@ const CreateGroup = () => {
                             <input onChange={(e) => setGroupImage(e.target.files[0])} type="file" id='groupIcon' hidden accept="image/*" />
                         </div>
                         <div className='avatar-text'>
-                            <p style={{fontSize: '0.9rem', fontWeight: 700}}>Group Icon</p>
-                            <p style={{fontSize: '11px', color: 'var(--text-muted)'}}>Click circle to add photo</p>
+                            <p className="primary-label">Group Icon</p>
+                            <p className="secondary-label">Add a photo</p>
                         </div>
                     </div>
 
@@ -97,7 +96,7 @@ const CreateGroup = () => {
                             <label>Group Name*</label>
                             <input 
                                 type="text" 
-                                placeholder="e.g., Coding Squad 🚀"
+                                placeholder="Enter group name..."
                                 value={groupName} 
                                 onChange={(e) => setGroupName(e.target.value)}
                                 className='clean-input'
@@ -108,21 +107,25 @@ const CreateGroup = () => {
                         <div className='input-box'>
                             <label>Add Members ({selectedUsers.length} selected)</label>
                             <div className='members-selection-list'>
-                                {availableUsers.map((user) => (
-                                    <div 
-                                        key={user._id} 
-                                        className={`member-item ${selectedUsers.includes(user._id) ? 'selected' : ''}`}
-                                        onClick={() => toggleUserSelection(user._id)}
-                                    >
-                                        <img src={user.profilePic || assets.avatar_icon} alt="user" />
-                                        <p>{user.fullName}</p>
-                                        <div className='selection-check'>
-                                            {selectedUsers.includes(user._id) && 
-                                                <span className="material-symbols-rounded">check_circle</span>
-                                            }
+                                {availableUsers.length > 0 ? (
+                                    availableUsers.map((user) => (
+                                        <div 
+                                            key={user._id} 
+                                            className={`member-item ${selectedUsers.includes(user._id) ? 'selected' : ''}`}
+                                            onClick={() => toggleUserSelection(user._id)}
+                                        >
+                                            <img src={user.profilePic || assets.avatar_icon} alt="user" />
+                                            <p>{user.fullName}</p>
+                                            <div className='selection-check'>
+                                                {selectedUsers.includes(user._id) && 
+                                                    <span className="material-symbols-rounded">check_circle</span>
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))
+                                ) : (
+                                    <p className="empty-contacts-text">No active contacts found. Chat with friends first!</p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -130,7 +133,7 @@ const CreateGroup = () => {
                     <div className='group-actions'>
                         <button type='button' className="cancel-btn" onClick={() => navigate('/')}>Cancel</button>
                         <button type='submit' className="create-group-btn" disabled={loading}>
-                            {loading ? "Creating..." : "Create Group"}
+                            {loading ? "..." : "Create"}
                         </button>
                     </div>
                 </form>

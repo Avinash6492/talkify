@@ -1,57 +1,104 @@
-import React from 'react';
-import assets from '../assets/assets';
+import React, { useState, useEffect } from "react";
 import "./RightSidebar.css";
+import assets from "../assets/assets";
+import axiosInstance from "../Config/axios";
 
 const RightSidebar = ({ selectedUser, onClose }) => {
-    const sharedMedia = [
-        { id: 1, img: assets.pic1 }, 
-        { id: 2, img: assets.pic2 },
-        { id: 3, img: assets.pic3 },
-        { id: 4, img: assets.pic4 },
-        { id: 5, img: assets.img1 },
-        { id: 6, img: assets.img2 },
-    ];
+  const [sharedMedia, setSharedMedia] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchSharedMedia = async () => {
+      // Reset media and exit if no user is selected
+      if (!selectedUser?._id) {
+        setSharedMedia([]);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        // Fetch real message history from the backend
+        const res = await axiosInstance.get(`/messages/${selectedUser._id}`);
+        if (res.data.success) {
+          // Filter: Keep only messages that contain an image or a file link
+          const media = res.data.messages.filter(
+            (msg) => msg.image || msg.fileUrl
+          );
+          setSharedMedia(media);
+        }
+      } catch (err) {
+        console.error("Error fetching media:", err);
+        setSharedMedia([]); 
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSharedMedia();
+  }, [selectedUser]);
+
+  // Handle the view when no chat is selected
+  if (!selectedUser) {
     return (
-        <div className='right-sidebar rs-animate-slide'>
-            {/* ❌ Close Button */}
-            <button className="rs-close-btn" onClick={onClose}>
-                <span className="material-symbols-rounded">close</span>
-            </button>
-
-            <div className='rs-profile-card'>
-                <div className='rs-avatar-ring'>
-                    <img src={selectedUser.profilePic || assets.avatar_icon} alt="user" className='rs-main-avatar' />
-                </div>
-                <h3>{selectedUser.fullName}</h3>
-                {/* 🟢 Status Indicator */}
-                <p className='rs-status'>Active Now</p>
-                
-                {/* 📝 NEW: User Bio Section */}
-                <div className='rs-bio-container'>
-                    <p className='rs-bio-text'>
-                        {selectedUser.bio || "No bio available."}
-                    </p>
-                </div>
-            </div>
-
-            <hr className='rs-divider' />
-
-            <div className='rs-media-section'>
-                <div className='rs-section-header'>
-                    <span>Shared Media</span>
-                    <button className='rs-view-all'>View All</button>
-                </div>
-                <div className='rs-media-grid tighter-3-cols'>
-                    {sharedMedia.map(item => (
-                        <div key={item.id} className='rs-media-item-small'>
-                            <img src={item.img || assets.avatar_icon} alt="shared" />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+      <div className="right-sidebar empty">
+        <button className="rs-close-btn" onClick={onClose}>
+          <span className="material-symbols-rounded">close</span>
+        </button>
+        <p>Select a chat to see details</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="right-sidebar">
+      {/* --- Close Icon --- */}
+      <button className="rs-close-btn" onClick={onClose}>
+        <span className="material-symbols-rounded">close</span>
+      </button>
+
+      {/* --- Profile Info --- */}
+      <div className="rs-profile">
+        <img 
+          src={selectedUser.profilePic || assets.avatar_icon} 
+          alt="profile" 
+          className="rs-avatar"
+        />
+        <h3>{selectedUser.fullName}</h3>
+        <p className="rs-handle">@{selectedUser.username}</p>
+      </div>
+
+      <hr className="rs-divider" />
+
+      {/* --- Shared Media --- */}
+      <div className="rs-media">
+        <p className="rs-title">Shared Media</p>
+        <div className="rs-media-grid">
+          {loading ? (
+            <div className="loader-mini-spinner"></div>
+          ) : sharedMedia.length > 0 ? (
+            sharedMedia.map((msg, index) => (
+              <img 
+                key={index} 
+                src={msg.image || msg.fileUrl} 
+                alt="shared-content" 
+                className="rs-grid-image"
+                onClick={() => window.open(msg.image || msg.fileUrl, "_blank")}
+              />
+            ))
+          ) : (
+            <div className="no-media-container">
+               <p className="no-media-text">No media shared yet</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* --- Actions --- */}
+      <div className="rs-actions">
+        <button className="rs-btn block">Block User</button>
+      </div>
+    </div>
+  );
 };
 
 export default RightSidebar;
