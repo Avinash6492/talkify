@@ -1,168 +1,527 @@
 .right-sidebar {
-    background-color: var(--bg-sidebar);
-    height: 100vh;
-    width: 320px;
-    border-left: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    padding: 24px 16px;
-    overflow-y: auto;
-    position: relative; /* Essential for absolute positioning of the close button */
+  background-color: var(--bg-sidebar);
+  height: 100vh;
+  width: 320px;
+  border-left: 1px solid var(--border-color);
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px 16px;
+
+  overflow-y: auto;
+
+  position: relative;
+
+  flex-shrink: 0;
+
+  transition: 0.3s ease;
 }
 
-/* Close Button Styling */
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
 .rs-close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px;
-    border-radius: 50%;
-    transition: 0.2s ease;
-    z-index: 10;
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  background: transparent;
+
+  border: none;
+
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px;
+
+  border-radius: 50%;
+
+  transition: 0.2s ease;
+
+  z-index: 10;
 }
 
 .rs-close-btn:hover {
-    background-color: var(--bg-input);
-    color: var(--text-primary);
-    transform: rotate(90deg);
+  background-color: var(--bg-input);
+
+  color: var(--text-primary);
+
+  transform: rotate(90deg);
 }
 
 .rs-close-btn span {
-    font-size: 22px !important;
+  font-size: 22px !important;
 }
 
-/* Empty State Styling */
+/* =========================================
+   EMPTY STATE
+========================================= */
+
 .right-sidebar.empty {
-    justify-content: center;
-    align-items: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--text-muted);
+
+  font-size: 0.9rem;
+
+  text-align: center;
+
+  padding: 20px;
 }
 
-/* Profile Styling */
+/* =========================================
+   PROFILE SECTION
+========================================= */
+
 .rs-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 20px;
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  margin-top: 20px;
 }
 
 .rs-avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--accent);
-    margin-bottom: 12px;
+  width: 90px;
+  height: 90px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 3px solid var(--accent);
+
+  margin-bottom: 12px;
 }
 
 .rs-profile h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
+  font-size: 1.1rem;
+
+  font-weight: 700;
+
+  color: var(--text-primary);
+
+  margin: 0;
 }
 
 .rs-handle {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 4px;
+  font-size: 0.85rem;
+
+  color: var(--text-muted);
+
+  margin-top: 4px;
+
+  word-break: break-word;
 }
+
+.rs-bio {
+  font-size: 13px;
+
+  color: var(--text-muted);
+
+  margin-top: 8px;
+
+  line-height: 1.5;
+
+  text-align: center;
+
+  max-width: 260px;
+
+  word-break: break-word;
+}
+
+/* =========================================
+   DIVIDER
+========================================= */
 
 .rs-divider {
-    border: 0;
-    border-top: 1px solid var(--border-color);
-    margin: 24px 0;
-    opacity: 0.5;
+  border: 0;
+
+  border-top: 1px solid var(--border-color);
+
+  margin: 24px 0;
+
+  opacity: 0.5;
 }
 
-/* Media Grid Styling */
+/* =========================================
+   SECTION TITLE
+========================================= */
+
 .rs-title {
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    letter-spacing: 0.8px;
-    margin-bottom: 16px;
+  font-size: 0.75rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  color: var(--text-muted);
+
+  letter-spacing: 0.8px;
+
+  margin-bottom: 16px;
 }
+
+/* =========================================
+   MEDIA GRID
+========================================= */
 
 .rs-media-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 8px;
 }
 
 .rs-grid-image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: var(--bg-input);
-    transition: transform 0.2s, opacity 0.2s;
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  background-color: var(--bg-input);
+
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
 }
 
 .rs-grid-image:hover {
-    transform: scale(1.05);
-    opacity: 0.85;
+  transform: scale(1.05);
+
+  opacity: 0.85;
 }
 
+/* =========================================
+   NO MEDIA
+========================================= */
+
 .no-media-container {
-    grid-column: span 3;
-    padding: 40px 0;
-    text-align: center;
+  grid-column: span 3;
+
+  padding: 40px 0;
+
+  text-align: center;
 }
 
 .no-media-text {
-    font-size: 0.85rem;
-    color: var(--text-muted);
+  font-size: 0.85rem;
+
+  color: var(--text-muted);
 }
 
-/* Action Buttons */
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
 .rs-actions {
-    margin-top: auto; /* Pushes block button to the bottom */
-    padding-top: 20px;
+  margin-top: auto;
+
+  padding-top: 20px;
 }
 
 .rs-btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
+  width: 100%;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  font-size: 0.9rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s;
 }
 
 .rs-btn.block {
-    background-color: transparent;
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+  background-color: transparent;
+
+  color: #ef4444;
+
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .rs-btn.block:hover {
-    background-color: rgba(239, 68, 68, 0.05);
-    border-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.05);
+
+  border-color: #ef4444;
 }
 
-/* Spinner */
+/* =========================================
+   EXTERNAL LINK
+========================================= */
+
+.rs-link-section {
+  padding: 0 20px;
+
+  margin-bottom: 15px;
+
+  width: 100%;
+}
+
+.rs-external-link {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: var(--accent);
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  word-break: break-all;
+
+  margin-top: 5px;
+}
+
+.rs-external-link:hover {
+  text-decoration: underline;
+}
+
+.rs-external-link span {
+  font-size: 18px;
+}
+
+/* =========================================
+   MINI LOADER
+========================================= */
+
 .loader-mini-spinner {
-    grid-column: span 3;
-    width: 22px;
-    height: 22px;
-    border: 2px solid var(--border-color);
-    border-top: 2px solid var(--accent);
-    border-radius: 50%;
-    margin: 20px auto;
-    animation: spin 0.8s linear infinite;
+  grid-column: span 3;
+
+  width: 22px;
+  height: 22px;
+
+  border: 2px solid var(--border-color);
+
+  border-top: 2px solid var(--accent);
+
+  border-radius: 50%;
+
+  margin: 20px auto;
+
+  animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+/* =========================================
+   SPIN ANIMATION
+========================================= */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   TABLET RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+  .right-sidebar {
+    width: 280px;
+  }
+
+  .rs-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .rs-profile h3 {
+    font-size: 1rem;
+  }
+
+  .rs-media-grid {
+    gap: 6px;
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .right-sidebar {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    width: 100%;
+
+    max-width: 340px;
+
+    height: 100vh;
+
+    z-index: 9999;
+
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.25);
+
+    animation: slideInRight 0.25s ease;
+  }
+
+  .rs-profile {
+    margin-top: 35px;
+  }
+
+  .rs-avatar {
+    width: 78px;
+    height: 78px;
+  }
+
+  .rs-profile h3 {
+    font-size: 1rem;
+  }
+
+  .rs-bio {
+    font-size: 12px;
+  }
+
+  .rs-title {
+    font-size: 11px;
+  }
+
+  .rs-btn {
+    font-size: 14px;
+
+    padding: 11px;
+  }
+
+  .rs-close-btn {
+    top: 12px;
+    right: 12px;
+  }
+
+  .rs-close-btn span {
+    font-size: 20px !important;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE DEVICES
+========================================= */
+
+@media (max-width: 480px) {
+  .right-sidebar {
+    width: 100%;
+
+    max-width: 100%;
+
+    padding: 20px 12px;
+  }
+
+  .rs-profile {
+    margin-top: 45px;
+  }
+
+  .rs-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .rs-profile h3 {
+    font-size: 15px;
+  }
+
+  .rs-handle {
+    font-size: 12px;
+  }
+
+  .rs-bio {
+    font-size: 12px;
+
+    max-width: 95%;
+  }
+
+  .rs-media-grid {
+    gap: 5px;
+  }
+
+  .rs-grid-image {
+    border-radius: 6px;
+  }
+
+  .rs-link-section {
+    padding: 0 5px;
+  }
+
+  .rs-external-link {
+    font-size: 13px;
+  }
+
+  .rs-btn {
+    padding: 10px;
+
+    font-size: 13px;
+  }
+}
+
+/* =========================================
+   VERY SMALL DEVICES
+========================================= */
+
+@media (max-width: 340px) {
+  .right-sidebar {
+    padding: 18px 10px;
+  }
+
+  .rs-avatar {
+    width: 65px;
+    height: 65px;
+  }
+
+  .rs-profile h3 {
+    font-size: 14px;
+  }
+
+  .rs-bio {
+    font-size: 11px;
+  }
+
+  .rs-btn {
+    font-size: 12px;
+  }
+
+  .rs-close-btn span {
+    font-size: 18px !important;
+  }
+}
+
+/* =========================================
+   SIDEBAR OPEN ANIMATION
+========================================= */
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

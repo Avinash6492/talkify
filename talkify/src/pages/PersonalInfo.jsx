@@ -6,7 +6,7 @@ import "./PersonalInfo.css";
 const PersonalInfo = () => {
     const navigate = useNavigate();
     
-    // 🕵️‍♂️ Pulling real data from localStorage
+    //  Pulling real data from localStorage
     const userData = JSON.parse(localStorage.getItem("userData"));
     
     const [showOTP, setShowOTP] = useState(false);

@@ -1,463 +1,809 @@
-/* --- Sidebar Main Layout --- */
+/* =========================================
+   SIDEBAR MAIN LAYOUT
+========================================= */
+
 .sidebar {
-    background-color: var(--bg-sidebar);
-    height: 100vh;
-    width: 100%;
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
+  background-color: var(--bg-sidebar);
+  height: 100vh;
+  width: 100%;
+  max-width: 340px;
+  border-right: 1px solid var(--border-color);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  position: relative;
+
+  flex-shrink: 0;
+
+  transition: 0.3s ease;
 }
 
-/* 🟢 TOP SECTION: Fixed Header, Search, and Tabs */
+/* =========================================
+   SIDEBAR TOP
+========================================= */
+
 .sidebar-top {
-    padding: 16px 16px 8px 16px;
-    flex-shrink: 0;
+  padding: 16px 16px 8px 16px;
+  flex-shrink: 0;
 }
+
+/* =========================================
+   HEADER
+========================================= */
 
 .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 16px;
 }
 
 .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sidebar-logo-img {
-    width: 24px; 
-    height: 24px;
-    object-fit: contain;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .sidebar-logo-text {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--logo-text-color);
-    letter-spacing: -0.5px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--logo-text-color);
+  letter-spacing: -0.5px;
 }
 
 .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* --- Profile Icon & Zoom Trigger --- */
-.account-menu-wrapper { 
-    position: relative; 
-    display: flex;
-    align-items: center;
+/* =========================================
+   PROFILE ENTRY
+========================================= */
+
+.account-menu-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .profile-entry {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-user-img {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid transparent;
-    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 2px solid transparent;
+
+  transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  cursor: pointer;
 }
 
 .header-user-img.active-ring {
-    border-color: var(--accent);
-    transform: scale(1.05);
+  border-color: var(--accent);
+
+  transform: scale(1.05);
 }
 
+/* =========================================
+   ZOOM BUTTON
+========================================= */
+
 .zoom-btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: 0.2s;
-    cursor: pointer;
-    color: white;
-    pointer-events: none;
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+
+  transition: 0.2s;
+
+  cursor: pointer;
+
+  color: white;
+
+  pointer-events: none;
 }
 
 .profile-entry:hover .zoom-btn {
-    opacity: 1;
-    pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }
+
+/* =========================================
+   ONLINE DOT
+========================================= */
 
 .online-dot {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 9px;
-    height: 9px;
-    background-color: var(--success);
-    border: 2px solid var(--bg-sidebar);
-    border-radius: 50%;
+  position: absolute;
+
+  bottom: 2px;
+  right: 2px;
+
+  width: 9px;
+  height: 9px;
+
+  background-color: var(--success);
+
+  border: 2px solid var(--bg-sidebar);
+
+  border-radius: 50%;
 }
 
-/* --- Search Bar --- */
+/* =========================================
+   SEARCH BAR
+========================================= */
+
 .search-container {
-    background-color: var(--bg-input);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    margin-bottom: 12px;
-    height: 38px;
+  background-color: var(--bg-input);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 12px;
+
+  margin-bottom: 12px;
+
+  height: 40px;
 }
 
-.search-icon-font { 
-    font-size: 16px !important; 
-    color: var(--text-muted);
+.search-icon-font {
+  font-size: 16px !important;
+
+  color: var(--text-muted);
 }
 
 .search-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text-primary);
-    margin-left: 8px;
-    width: 100%;
-    font-size: 0.85rem;
+  background: transparent;
+
+  border: none;
+
+  outline: none;
+
+  color: var(--text-primary);
+
+  margin-left: 8px;
+
+  width: 100%;
+
+  font-size: 0.85rem;
 }
 
-/* --- Navigation Tabs Hidden --- */
+/* =========================================
+   HIDE TABS
+========================================= */
+
 .sidebar-tabs {
-    display: none;
+  display: none;
 }
 
-/* 🔵 LIST SECTION: Only this part scrolls */
+/* =========================================
+   USER LIST
+========================================= */
+
 .user-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 8px 20px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-top: 10px;
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 0 8px 20px 8px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  margin-top: 10px;
 }
 
-.user-list::-webkit-scrollbar { width: 3px; }
-.user-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+.user-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.user-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+
+  border-radius: 10px;
+}
+
+/* =========================================
+   USER ITEM
+========================================= */
 
 .user-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    border-radius: 12px;
-    cursor: pointer;
-    position: relative;
-    transition: 0.2s ease;
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 8px 10px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  position: relative;
+
+  transition: 0.2s ease;
 }
 
-.user-item:hover { background-color: var(--bg-input); }
-.user-item.active { background-color: var(--accent-light); }
+.user-item:hover {
+  background-color: var(--bg-input);
+}
 
-.user-avatar { 
-    width: 42px; 
-    height: 42px; 
-    border-radius: 50%; 
-    object-fit: cover; 
-    transition: transform 0.2s;
+.user-item.active {
+  background-color: var(--accent-light);
+}
+
+/* =========================================
+   USER AVATAR
+========================================= */
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  transition: transform 0.2s;
 }
 
 .user-avatar:hover {
-    transform: scale(1.08);
+  transform: scale(1.08);
 }
 
+/* =========================================
+   USER INFO
+========================================= */
+
 .user-info {
-    flex: 1;
-    min-width: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .user-fullname {
-    font-weight: 600;
-    font-size: 0.88rem;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-weight: 600;
+  font-size: 0.88rem;
+
+  color: var(--text-primary);
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
 .user-handle {
-    font-size: 0.7rem;
-    color: var(--text-muted);
+  font-size: 0.7rem;
+  color: var(--text-muted);
 }
 
-/* --- Dropdown Menu --- */
+/* =========================================
+   DROPDOWN MENU
+========================================= */
+
 .bespoke-dropdown {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    width: 200px;
-    background-color: var(--bg-sidebar);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    padding: 6px;
-    z-index: 2000;
+  position: absolute;
+
+  top: 50px;
+  right: 0;
+
+  width: 200px;
+
+  background-color: var(--bg-sidebar);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 14px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  padding: 6px;
+
+  z-index: 2000;
 }
 
 .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    font-size: 0.82rem;
-    border-radius: 8px;
-    cursor: pointer;
-    color: var(--text-primary);
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 8px 12px;
+
+  font-size: 0.82rem;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  color: var(--text-primary);
+
+  transition: 0.2s;
 }
 
-.menu-item span { 
-    font-size: 18px !important; 
-    color: var(--text-muted); 
+.menu-item span {
+  font-size: 18px !important;
+
+  color: var(--text-muted);
 }
 
-.menu-item:hover { background-color: var(--bg-input); color: var(--accent); }
+.menu-item:hover {
+  background-color: var(--bg-input);
+
+  color: var(--accent);
+}
 
 .menu-divider {
-    height: 1px;
-    background-color: var(--border-color);
-    margin: 4px 6px;
-    opacity: 0.3;
+  height: 1px;
+
+  background-color: var(--border-color);
+
+  margin: 4px 6px;
+
+  opacity: 0.3;
 }
 
-.menu-item.logout { color: #f43f5e; }
-.menu-item.logout span { color: #f43f5e; }
+.menu-item.logout {
+  color: #f43f5e;
+}
 
-/* Notification Badge */
+.menu-item.logout span {
+  color: #f43f5e;
+}
+
+/* =========================================
+   UNSEEN BADGE
+========================================= */
+
 .unseen-badge {
-    flex-shrink: 0;
-    background: #ef4444;
-    color: white;
-    font-size: 9px;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    margin-left: 8px;
+  flex-shrink: 0;
+
+  background-color: #ef4444;
+
+  color: #ffffff;
+
+  font-size: 10px;
+
+  min-width: 20px;
+
+  height: 20px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-weight: 800;
+
+  margin-left: 8px;
+
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
+
+  animation: popBadge 0.3s cubic-bezier(0.17, 0.89, 0.32, 1.28);
 }
 
-/* --- 🆕 Image Lightbox (Fullscreen View) --- */
+/* =========================================
+   IMAGE LIGHTBOX
+========================================= */
+
 .image-lightbox-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    cursor: zoom-out;
-    animation: fadeIn 0.3s ease;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: rgba(0, 0, 0, 0.85);
+
+  backdrop-filter: blur(10px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 9999;
+
+  cursor: zoom-out;
+
+  animation: fadeIn 0.3s ease;
 }
 
 .lightbox-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
 }
 
 .large-profile-view {
-    width: 380px;
-    height: 380px;
-    object-fit: cover;
-    border-radius: 24px;
-    border: 4px solid var(--accent);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-    animation: scaleUp 0.3s cubic-bezier(0.17, 0.89, 0.32, 1.28);
+  width: 380px;
+  height: 380px;
+
+  object-fit: cover;
+
+  border-radius: 24px;
+
+  border: 4px solid var(--accent);
+
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+
+  animation: scaleUp 0.3s cubic-bezier(0.17, 0.89, 0.32, 1.28);
 }
 
 .close-lightbox {
-    position: absolute;
-    top: -50px;
-    right: 0;
-    color: white;
-    font-size: 32px !important;
-    cursor: pointer;
-    transition: 0.2s;
+  position: absolute;
+
+  top: -50px;
+  right: 0;
+
+  color: white;
+
+  font-size: 32px !important;
+
+  cursor: pointer;
+
+  transition: 0.2s;
 }
 
 .close-lightbox:hover {
-    color: var(--accent);
-    transform: rotate(90deg);
+  color: var(--accent);
+
+  transform: rotate(90deg);
 }
 
-/* 🆕 Search Placeholder Styling */
+/* =========================================
+   SEARCH PLACEHOLDER
+========================================= */
+
 .search-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60%;
-    text-align: center;
-    padding: 20px;
-    opacity: 0.5;
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 60%;
+
+  text-align: center;
+
+  padding: 30px;
+
+  animation: fadeIn 0.5s ease;
 }
 
 .placeholder-icon {
-    width: 60px;
-    margin-bottom: 15px;
-    filter: grayscale(1);
+  width: 55px;
+
+  margin-bottom: 20px;
+
+  filter: grayscale(1);
+
+  opacity: 0.3;
 }
 
 .search-placeholder p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.4;
+  font-size: 0.9rem;
+
+  color: var(--text-muted);
+
+  line-height: 1.5;
 }
 
 .empty-text {
-    text-align: center;
-    padding: 20px;
-    color: var(--text-muted);
-    font-size: 0.85rem;
+  font-size: 0.85rem;
+
+  color: var(--text-muted);
+
+  line-height: 1.6;
+
+  max-width: 200px;
+
+  text-align: center;
 }
+
+/* =========================================
+   LIST LABEL
+========================================= */
 
 .list-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 10px 15px;
-    margin: 0;
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  color: var(--text-muted);
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+
+  padding: 15px 15px 5px 15px;
+
+  margin: 0;
+
+  opacity: 0.8;
 }
 
-/* --- Animations --- */
-.animate-pop { 
-    animation: pop 0.25s cubic-bezier(0.17, 0.89, 0.32, 1.28); 
+/* =========================================
+   MINI SPINNER
+========================================= */
+
+.loader-mini-spinner {
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid rgba(255, 255, 255, 0.1);
+
+  border-top: 2px solid var(--accent);
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+
+  margin-left: 8px;
+}
+
+/* =========================================
+   POP ANIMATION
+========================================= */
+
+.animate-pop {
+  animation: pop 0.25s cubic-bezier(0.17, 0.89, 0.32, 1.28);
 }
 
 @keyframes pop {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scaleUp {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .sidebar.hide-mobile { display: none; }
-    .large-profile-view {
-        width: 85vw;
-        height: 85vw;
-    }
-}
-
-/* --- 🔴 Unread Message Badge --- */
-.unseen-badge {
-    flex-shrink: 0;
-    background-color: #ef4444; /* High-visibility red */
-    color: #ffffff;
-    font-size: 10px;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    margin-left: 8px;
-    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
-    animation: popBadge 0.3s cubic-bezier(0.17, 0.89, 0.32, 1.28);
-}
-
-/* --- 🔍 Section Labels (Recent vs Search) --- */
-.list-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    padding: 15px 15px 5px 15px;
-    margin: 0;
-    opacity: 0.8;
-}
-
-/* --- 🧊 Search Placeholder (Empty State) --- */
-.search-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60%;
-    text-align: center;
-    padding: 30px;
-    animation: fadeIn 0.5s ease;
-}
-
-.placeholder-icon {
-    width: 55px;
-    margin-bottom: 20px;
-    filter: grayscale(1);
-    opacity: 0.3;
-}
-
-.empty-text {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 200px;
-}
-
-/* --- ⚙️ Mini Spinner for Search Loading --- */
-.loader-mini-spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-top: 2px solid var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-left: 8px;
-}
-
-/* --- ✨ Animations --- */
 @keyframes popBadge {
-    from { transform: scale(0); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* =========================================
+   TABLET RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+  .sidebar {
+    max-width: 300px;
+  }
+
+  .large-profile-view {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+  }
+
+  .sidebar.hide-mobile {
+    display: none;
+  }
+
+  .sidebar-top {
+    padding: 14px 12px 8px 12px;
+  }
+
+  .sidebar-logo-text {
+    font-size: 1rem;
+  }
+
+  .search-container {
+    height: 38px;
+  }
+
+  .user-item {
+    padding: 10px;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .large-profile-view {
+    width: 85vw;
+    height: 85vw;
+  }
+
+  .close-lightbox {
+    top: -40px;
+    font-size: 28px !important;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .sidebar-top {
+    padding: 12px 10px 6px 10px;
+  }
+
+  .sidebar-logo-img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .sidebar-logo-text {
+    font-size: 0.95rem;
+  }
+
+  .header-user-img,
+  .zoom-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .search-input {
+    font-size: 13px;
+  }
+
+  .user-fullname {
+    font-size: 0.84rem;
+  }
+
+  .user-handle {
+    font-size: 0.68rem;
+  }
+
+  .unseen-badge {
+    min-width: 18px;
+    height: 18px;
+    font-size: 9px;
+  }
+
+  .large-profile-view {
+    border-radius: 18px;
+  }
+
+  .bespoke-dropdown {
+    width: 180px;
+  }
+}
+
+/* =========================================
+   VERY SMALL DEVICES
+========================================= */
+
+@media (max-width: 340px) {
+  .sidebar-logo-text {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-fullname {
+    font-size: 0.8rem;
+  }
+
+  .user-handle {
+    font-size: 0.65rem;
+  }
+
+  .search-container {
+    padding: 0 10px;
+  }
 }

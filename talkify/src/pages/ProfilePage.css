@@ -138,3 +138,27 @@
     .input-stack { gap: 8px; }
     .main-avatar-img { width: 50px; height: 50px; }
 }
+
+.back-to-chat {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.back-to-chat:hover {
+    color: var(--accent);
+    transform: translateX(-5px);
+}
+
+.back-to-chat span {
+    font-size: 20px;
+}

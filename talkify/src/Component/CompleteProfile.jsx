@@ -22,7 +22,7 @@ const CompleteProfile = ({ currentUser, onSave, onClose }) => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        // 🚀 Only here does the data actually "Update"
+        //  Only here does the data actually "Update"
         onSave(formData); 
         onClose();
     };

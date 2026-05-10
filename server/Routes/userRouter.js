@@ -1,30 +1,80 @@
 import express from "express";
-// 🛠️ Added 'getUsersForSidebar' and 'searchUsers' to the imports
-import { 
-    checkAuth, 
-    login, 
-    signup, 
-    updateProfile, 
-    getUsersForSidebar, 
-    searchUsers 
-} from "../controllers/userController.js"; 
+
+import {
+    checkAuth,
+    login,
+    signup,
+    updateProfile,
+    verifyEmail,
+    resendOtp,
+    updateEmail,
+    completeProfile,
+    getUsersForSidebar,
+    searchUsers,
+    checkUsername // ✅ Added missing import
+} from "../controllers/userController.js";
+
 import { protectRoute } from "../middleware/auth.js";
 
 const userRouter = express.Router();
 
 // --- Auth Routes ---
+
 userRouter.post("/signup", signup);
+
 userRouter.post("/login", login);
+
 userRouter.get("/check", protectRoute, checkAuth);
 
+// ✅ FIXED: Changed 'router' to 'userRouter' to match your definition
+userRouter.get("/check-username", checkUsername); 
+
+// --- Onboarding Routes ---
+
+userRouter.post(
+    "/verify-email",
+    protectRoute,
+    verifyEmail
+);
+
+userRouter.post(
+    "/resend-otp",
+    protectRoute,
+    resendOtp
+);
+
+userRouter.put(
+    "/update-email",
+    protectRoute,
+    updateEmail
+);
+
+userRouter.post(
+    "/complete-profile",
+    protectRoute,
+    completeProfile
+);
+
 // --- Profile Routes ---
-userRouter.put("/update-profile", protectRoute, updateProfile);
 
-// --- 🔍 NEW: Sidebar & Search Routes ---
-// This fetches users you have already chatted with or all users for the sidebar
-userRouter.get("/contacts", protectRoute, getUsersForSidebar);
+userRouter.put(
+    "/update-profile",
+    protectRoute,
+    updateProfile
+);
 
-// This handles the real-time search from your Sidebar.jsx
-userRouter.get("/search", protectRoute, searchUsers);
+// --- Sidebar & Search Routes ---
+
+userRouter.get(
+    "/contacts",
+    protectRoute,
+    getUsersForSidebar
+);
+
+userRouter.get(
+    "/search",
+    protectRoute,
+    searchUsers
+);
 
 export default userRouter;

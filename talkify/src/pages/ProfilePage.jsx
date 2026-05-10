@@ -14,28 +14,25 @@ const ProfilePage = () => {
     const [name, setName] = useState(currentUser?.fullName || "");
     const [username, setUsername] = useState(currentUser?.username || "");
     const [bio, setBio] = useState(currentUser?.bio || "");
+    const [link, setLink] = useState(currentUser?.link || ""); // 🆕 Added Link state
     const [loading, setLoading] = useState(false);
     
-    // 🆕 State for username validation
-    const [isAvailable, setIsAvailable] = useState(null); // null = original, true = available, false = taken
+    const [isAvailable, setIsAvailable] = useState(null); 
     const [checkingUsername, setCheckingUsername] = useState(false);
 
-    // 🔍 1. Real-time Username Availability Check
+    // 🔍 Real-time Username Availability Check
     useEffect(() => {
-        // Don't check if the username hasn't changed from the original
         if (!username || username === currentUser?.username) {
             setIsAvailable(null);
             return;
         }
 
-        // Clean username: No spaces, allow symbols and numbers
         const cleanUsername = username.replace(/\s/g, "").toLowerCase();
         if (username !== cleanUsername) setUsername(cleanUsername);
 
         const delayDebounceFn = setTimeout(async () => {
             setCheckingUsername(true);
             try {
-                // Adjust this URL to match your backend route for checking availability
                 const res = await axiosInstance.get(`/users/check-username?username=${cleanUsername}`);
                 setIsAvailable(res.data.available);
             } catch (err) {
@@ -43,10 +40,10 @@ const ProfilePage = () => {
             } finally {
                 setCheckingUsername(false);
             }
-        }, 500); // 500ms delay to prevent excessive API calls
+        }, 500);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [username]);
+    }, [username, currentUser?.username]);
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
@@ -66,18 +63,19 @@ const ProfilePage = () => {
                 });
             }
 
-            // 📤 Send updated username along with other details
+            // 📤 Updated Payload with Link
             const res = await axiosInstance.put('/users/update-profile', {
                 fullName: name,
-                username: username, // Pass the new username
+                username: username,
                 bio: bio,
-                profilePic: base64Image 
+                link: link, // 🆕 Added Link to payload
+                profilePic: base64Image || currentUser.profilePic 
             });
 
             if (res.data.success) {
                 localStorage.setItem("userData", JSON.stringify(res.data.user));
                 alert("Profile successfully updated!");
-                window.location.href = "/";
+                navigate("/"); // Use navigate instead of window.location for smoother UX
             }
         } catch (error) {
             console.error("Update Error:", error);
@@ -89,10 +87,16 @@ const ProfilePage = () => {
 
     return (
         <div className='profile-page-container'>
+            {/* Back Button for Settings feel */}
+            <button className="back-to-chat" onClick={() => navigate("/")}>
+                <span className="material-symbols-rounded">arrow_back</span>
+                Back to Chat
+            </button>
+
             <div className='profile-minimal-card animate-in'>
                 <form onSubmit={handleUpdateProfile} className='profile-main-form'>
-                    <h1 className='profile-main-title'>Complete your profile</h1>
-                    <p className='profile-subtitle'>Set up your identity to start chatting on Talkify</p>
+                    <h1 className='profile-main-title'>Edit Profile</h1>
+                    <p className='profile-subtitle'>Manage your public identity on Talkify</p>
 
                     <div className='profile-pic-uploader'>
                         <div className="avatar-preview-wrapper">
@@ -104,41 +108,49 @@ const ProfilePage = () => {
                         </div>
                         <label htmlFor="avatar" className='change-photo-btn'>
                             <span className="material-symbols-rounded">add_a_photo</span>
-                            {image ? "Photo Selected" : "Upload Profile Photo"}
+                            Change Photo
                         </label>
                         <input onChange={(e) => setImage(e.target.files[0])} type="file" id='avatar' hidden accept="image/*" />
                     </div>
 
                     <div className='input-stack'>
                         <div className='input-box'>
-                            <label>Username (Must be unique)</label>
+                            <label>Username</label>
                             <div className="username-input-container">
                                 <input 
                                     type="text" 
                                     value={username} 
                                     onChange={(e) => setUsername(e.target.value)}
                                     className={`clean-input ${isAvailable === false ? 'input-error' : ''}`}
-                                    placeholder="e.g. avinash_123!"
                                 />
-                                {/* 🛠️ Status Indicator */}
                                 <div className="availability-indicator">
                                     {checkingUsername && <div className="loader-mini"></div>}
                                     {!checkingUsername && isAvailable === true && <span className="status-available">Available</span>}
                                     {!checkingUsername && isAvailable === false && <span className="status-taken">Taken</span>}
                                 </div>
                             </div>
-                            <span className='input-hint'>Use letters, numbers, and symbols like _ ! @</span>
                         </div>
 
                         <div className='input-box'>
                             <label>Full Name*</label>
                             <input 
                                 type="text" 
-                                placeholder="e.g. Avinash Maurya"
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)}
                                 className='clean-input'
                                 required
+                            />
+                        </div>
+
+                        {/* 🆕 NEW Link Input */}
+                        <div className='input-box'>
+                            <label>Website / Link</label>
+                            <input 
+                                type="text" 
+                                placeholder="e.g. portfolio.com"
+                                value={link} 
+                                onChange={(e) => setLink(e.target.value)}
+                                className='clean-input'
                             />
                         </div>
 
@@ -161,7 +173,7 @@ const ProfilePage = () => {
                             className="update-profile-btn" 
                             disabled={loading || checkingUsername || isAvailable === false}
                         >
-                            {loading ? "Saving Changes..." : "Finish Setup & Enter"}
+                            {loading ? "Saving Changes..." : "Save Profile Changes"}
                         </button>
                     </div>
                 </form>
