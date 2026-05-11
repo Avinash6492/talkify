@@ -41,6 +41,19 @@ const LoginPage = () => {
             }
         }
 
+        if (name === "password") {
+
+    // No spaces allowed
+    if (value.includes(" ")) {
+        return;
+    }
+
+    // Max 8 characters
+    if (value.length > 8) {
+        return;
+    }
+}
+
         setFormData({
             ...formData,
             [name]: value,
@@ -114,7 +127,7 @@ const LoginPage = () => {
                     window.dispatchEvent(new Event("authChange"));
 
                     // Go to Home Page
-                    navigate("/");
+                   navigate("/onboardingModal");
 
                 } else {
                     alert(res.data.message);
@@ -213,6 +226,7 @@ const LoginPage = () => {
                                     className="login-input"
                                     onChange={handleInputChange}
                                     required
+                                    maxLength={8}
                                 />
 
                                 <span

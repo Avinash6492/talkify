@@ -1,5 +1,6 @@
 import express from "express";
 
+
 import {
     checkAuth,
     login,
@@ -76,5 +77,6 @@ userRouter.get(
     protectRoute,
     searchUsers
 );
+
 
 export default userRouter;

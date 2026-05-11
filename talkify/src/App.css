@@ -1,45 +1,78 @@
 .app-container {
     min-height: 100vh;
     width: 100%;
-    /* Use your SVG as a fixed background */
+
     background-image: url('./assets/bgImage.svg');
+
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    
-    /* A subtle overlay to make the text readable regardless of the image */
+
     background-color: var(--bg-main);
+
     background-blend-mode: overlay;
-    
+
     display: flex;
     flex-direction: column;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-/* Base fade-in animation for page transitions */
+/* =========================================
+   PAGE TRANSITION
+========================================= */
+
 .page-fade-enter {
     animation: fadeIn 0.4s ease-out;
+
+    width: 100%;
+    min-height: 100vh;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* 🌍 MASTER LOCK: Prevents the whole browser from scrolling */
-html, body, #root {
-    height: 100vh;
-    width: 100vw;
+/* =========================================
+   GLOBAL FIX
+========================================= */
+
+html,
+body,
+#root {
+    min-height: 100%;
+    width: 100%;
+
     margin: 0;
     padding: 0;
-    overflow: hidden; /* 🛠️ THE FIX: No more page-level scrolling */
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-/* The container holding Sidebar + ChatWindow + RightPanel */
+/* =========================================
+   CHAT LAYOUT ONLY
+========================================= */
+
 .app-layout {
     display: flex;
+
     height: 100vh;
-    width: 100vw;
+
+    width: 100%;
+
     overflow: hidden;
+
     background-color: var(--bg-main);
 }
