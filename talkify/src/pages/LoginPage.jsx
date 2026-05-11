@@ -92,8 +92,9 @@ const LoginPage = () => {
 
                     window.dispatchEvent(new Event("authChange"));
 
-                    navigate("/");
-
+                    setTimeout(() => {
+    navigate("/chat");
+}, 100);
                 } else {
                     alert(res.data.message);
                 }
@@ -127,7 +128,7 @@ const LoginPage = () => {
                     window.dispatchEvent(new Event("authChange"));
 
                     // Go to Home Page
-                   navigate("/onboardingModal");
+                  navigate("/chat");
 
                 } else {
                     alert(res.data.message);

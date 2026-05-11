@@ -14,13 +14,13 @@ const ProfilePage = () => {
     const [name, setName] = useState(currentUser?.fullName || "");
     const [username, setUsername] = useState(currentUser?.username || "");
     const [bio, setBio] = useState(currentUser?.bio || "");
-    const [link, setLink] = useState(currentUser?.link || ""); // 🆕 Added Link state
+    const [link, setLink] = useState(currentUser?.link || ""); //  Added Link state
     const [loading, setLoading] = useState(false);
     
     const [isAvailable, setIsAvailable] = useState(null); 
     const [checkingUsername, setCheckingUsername] = useState(false);
 
-    // 🔍 Real-time Username Availability Check
+    //  Real-time Username Availability Check
     useEffect(() => {
         if (!username || username === currentUser?.username) {
             setIsAvailable(null);
@@ -63,20 +63,20 @@ const ProfilePage = () => {
                 });
             }
 
-            // 📤 Updated Payload with Link
+            //  Updated Payload with Link
             const res = await axiosInstance.put('/users/update-profile', {
                 fullName: name,
                 username: username,
                 bio: bio,
-                link: link, // 🆕 Added Link to payload
+                link: link, //  Added Link to payload
                 profilePic: base64Image || currentUser.profilePic 
             });
 
             if (res.data.success) {
-                localStorage.setItem("userData", JSON.stringify(res.data.user));
-                alert("Profile successfully updated!");
-                navigate("/"); // Use navigate instead of window.location for smoother UX
-            }
+    localStorage.setItem("userData", JSON.stringify(res.data.user));
+    alert("Profile successfully updated!");
+    navigate("/chat"); // This sends you back to the Chat
+}
         } catch (error) {
             console.error("Update Error:", error);
             alert(error.response?.data?.message || "Failed to update profile.");
