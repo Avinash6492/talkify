@@ -1,6 +1,6 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
-import Otp from "../models/Otp.js";
+import Otp from "../models/otp.js";
 import Message from "../models/message.js";
 
 import bcrypt from "bcryptjs";
