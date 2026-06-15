@@ -38,12 +38,18 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   }, []);
 
   // --- 2. Real-time Message Notifications ---
-  useEffect(() => {
+ useEffect(() => {
     if (!currentUser?._id) return;
-    const socket = io("http://localhost:5000", {
-        query: { userId: currentUser._id }
-    });
 
+    const socket = io(
+        import.meta.env.VITE_API_URL?.replace("/api", ""),
+        {
+            query: {
+                userId: currentUser._id
+            }
+        }
+    );
+    
     socket.on("newMessage", (newMsg) => {
         // Increment badge if the sender is NOT the currently open chat
         if (selectedUser?._id !== newMsg.senderId) {

@@ -10,11 +10,14 @@ import "./ChatContainer.css";
 
 const userData = JSON.parse(localStorage.getItem("userData"));
 
-const socket = io("http://localhost:5000", {
-  query: {
-    userId: userData?._id,
-  },
-});
+const socket = io(
+  import.meta.env.VITE_API_URL?.replace("/api", ""),
+  {
+    query: {
+      userId: userData?._id,
+    },
+  }
+);
 
 const ChatContainer = ({
   selectedUser,
